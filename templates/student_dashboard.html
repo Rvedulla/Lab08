@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ user.username }}!</h2>
+<h3>Your Classes:</h3>
+<ul>
+    {% for class in user.enrollments %}
+        <li>{{ class.class_.name }}</li>
+    {% endfor %}
+</ul>
+
+<h3>All Available Classes:</h3>
+<ul>
+    {% for class in classes %}
+        <li>{{ class.name }} - Capacity: {{ class.capacity }}
+            {% if class.capacity > len(class.enrolled) %}
+                <form method="post" action="{{ url_for('enroll', class_id=class.id) }}">
+                    <button type="submit">Enroll</button>
+                </form>
+            {% else %}
+                (Full)
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+<a href="{{ url_for('logout') }}">Log out</a>
+{% endblock %}
